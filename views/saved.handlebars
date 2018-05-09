@@ -1,0 +1,17 @@
+
+  <div id="articles">
+    {{#each articles }}
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <a href="{{link}}">
+                    <h3 id="title" class="panel-title">{{title}}</h3>
+                </a>
+                <button data-id="{{_id}}" class="unsave">Unsave</button>
+                <button data-id="{{_id}}" class="note">Add Note</button>
+            </div>
+            <div id="summary" class="panel-body">{{summary}}</div>
+        </div>    
+    {{/each}}
+  </div>
+
+  <script src="app.js"></script>
