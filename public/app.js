@@ -24,18 +24,53 @@ $(document).ready(function () {
     $(document).on("click", ".btn.save", handleNoteSave);
     $(document).on("click", ".btn.note-delete", handleNoteDelete);
 
+
+    function renderNotesList(data) {
+      // This function handles rendering note list items to our notes modal
+      // Setting up an array of notes to render after finished
+      // Also setting up a currentNote variable to temporarily store each note
+      var notesToRender = [];
+      var currentNote;
+      if (!data.notes.length) {
+        // If we have no notes, just display a message explaing this
+        currentNote = ["<li class='list-group-item'>", "No notes for this article yet.", "</li>"].join("");
+        notesToRender.push(currentNote);
+      }
+      else {
+        // If we do have notes, go through each one
+        for (var i = 0; i < data.notes.length; i++) {
+          // Constructs an li element to contain our noteText and a delete button
+          currentNote = $(
+            [
+              "<li class='list-group-item note'>",
+              data.notes[i].body,
+              "<button class='btn btn-danger note-delete'>x</button>",
+              "</li>"
+            ].join("")
+          );
+          // Store the note id on the delete button for easy access when trying to delete
+          currentNote.children("button").data("_id", data.notes[i]._id);
+          // Adding our currentNote to the notesToRender array
+          notesToRender.push(currentNote);
+        }
+      }
+      // Now append the notesToRender to the note-container inside the note modal
+      $(".note-container").append(notesToRender);
+    }
+  
     function handleArticleNotes() {
 
         var thisId = $(this).attr("data-id");
         // Grab any notes with this headline/article id
         $.get("/notes/" + thisId).then(function(data) {
+          console.log(data);
           // Constructing our initial HTML to add to the notes modal
           var modalText = [
             "<div class='container-fluid text-center'>",
             "<hr />",
             "<ul class='list-group note-container'>",
             "</ul>",
-            "<textarea placeholder='New Note' rows='4' cols='60'></textarea>",
+            "<textarea id='newNoteArea' placeholder='New Note' rows='4' cols='60'></textarea>",
             "<button class='btn btn-success save'>Save Note</button>",
             "</div>"
           ].join("");
@@ -52,7 +87,7 @@ $(document).ready(function () {
           // When trying to add a new note
           $(".btn.save").data("article", noteData);
           // renderNotesList will populate the actual note HTML inside of the modal we just created/opened
-          //renderNotesList(noteData);
+          renderNotesList(noteData);
         });
       }
     
@@ -61,7 +96,8 @@ $(document).ready(function () {
         // Setting a variable to hold some formatted data about our note,
         // grabbing the note typed into the input box
         var noteData;
-        var newNote = $(".bootbox-body textarea").val().trim();
+        var newNote = {};
+        newNote.body = $("#newNoteArea").val().trim();
         // If we actually have data typed into the note input field, format it
         // and post it to the "/api/notes" route and send the formatted noteData as well
         if (newNote) {
@@ -80,7 +116,7 @@ $(document).ready(function () {
         var noteToDelete = $(this).data("_id");
         // Perform an DELETE request to "/api/notes/" with the id of the note we're deleting as a parameter
         $.ajax({
-          url: "/api/notes/" + noteToDelete,
+          url: "/notes/" + noteToDelete,
           method: "DELETE"
         }).then(function() {
           // When done, hide the modal
