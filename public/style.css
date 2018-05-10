@@ -6,6 +6,20 @@
     float: right;
 }
 
-.note {
+.noteBtn {
     float: right;
 }
+
+h2 {
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+.jumbotron {
+    background: url("/travel.jpg");
+    padding-bottom: 350px;
+}
+
