@@ -1,13 +1,17 @@
 .save {
     float: right;
+    margin-top: 25px;
 }
 
 .unsave {
     float: right;
+    margin-top: 25px;
 }
 
 .noteBtn {
     float: right;
+    margin-right: 10px;
+    margin-top: 25px;
 }
 
 h2 {
@@ -20,6 +24,27 @@ h1 {
 
 .jumbotron {
     background: url("/travel.jpg");
-    padding-bottom: 350px;
+    padding-bottom: 430px;
+}
+
+#copy {
+    text-align: center;
+}
+
+.footer {
+    border-color: #e7e7e7;
+    background-color: #e7e7e7;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.list-group-item {
+    padding-bottom: 25px;
+}
+
+.note-delete {
+    float: right;
+    background-color: dimgrey;
+    border-color: dimgrey;
 }
 

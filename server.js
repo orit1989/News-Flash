@@ -68,16 +68,12 @@ app.get("/scrape", function(req, res) {
             return res.json(err);
         });
     });
-
-    // If we were able to successfully scrape and save an Article, send a message to the client
     res.render("scrape");
   });
 });
 
 // Route for getting all Articles from the db
 app.get("/", function(req, res) {
-  // Grab every document in the Articles collection
-  console.log('home');
   db.Article.find({saved: false})
     .then(function(dbArticle) {
       res.render("articles", {
@@ -122,20 +118,16 @@ app.get("/saved", function(req, res) {
 
 // Route for grabbing a specific Article by id, and deleting it from the saved
 app.put("/articles/saved/:id", function(req, res) {
-    // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
     db.Article.update({ _id: req.params.id }, {$set:{saved: false}})
       .then(function(dbArticle) {
-        // If we were able to successfully find an Article with the given id, send it back to the client
         res.json(dbArticle);
       })
   });
 
   // Route for grabbing a specific Article by id, and adding it to saved
 app.post("/articles/saved/:id", function(req, res) {
-    // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
     db.Article.update({ _id: req.params.id }, {$set:{saved: true}})
       .then(function(dbArticle) {
-        // If we were able to successfully find an Article with the given id, send it back to the client
         res.json(dbArticle);
       })
   });
@@ -148,7 +140,6 @@ app.post("/notes/:id", function(req, res) {
       return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { note: dbNote._id } }, { new: true });
     })
     .then(function(dbArticle) {
-      // If we were able to successfully update an Article, send it back to the client
       res.json(dbArticle);
     })
     .catch(function(err) {
@@ -157,12 +148,10 @@ app.post("/notes/:id", function(req, res) {
     });
 });
 
+// Route for grabbing a specific article and then grabbing the notes associated with it
 app.get("/notes/:id", function(req, res) {
-  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-  var notes = [];
   db.Article.find({ _id: req.params.id })
     .then(function(dbArticle) {
-      // If we were able to successfully find an Article with the given id, send it back to the client
       db.Note.find({_id : {$in: dbArticle[0].note}}) 
       .then(function(dbNotes) {
           console.log(dbNotes);

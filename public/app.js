@@ -20,7 +20,7 @@ $(document).ready(function () {
     });
 
 
-    $(".note").on("click", handleArticleNotes);
+    $(".noteBtn").on("click", handleArticleNotes);
     $(document).on("click", ".btn.save", handleNoteSave);
     $(document).on("click", ".btn.note-delete", handleNoteDelete);
 
@@ -58,7 +58,7 @@ $(document).ready(function () {
             "<ul class='list-group note-container'>",
             "</ul>",
             "<textarea id='newNoteArea' placeholder='New Note' rows='4' cols='60'></textarea>",
-            "<button class='btn btn-success save'>Save Note</button>",
+            "<button class='btn btn-info save'>Save Note</button>",
             "</div>"
           ].join("");
           bootbox.dialog({
